@@ -22,8 +22,6 @@
 - When voting, Members can also offer a "Reason" for their vote.
 - If the number of Yay votes on a Bill reaches two thirds of the population of the members during the fixed "Bill polling time", it is accepted as a "Principal", otherwise it is rejected.
 
-Support fees and Proposal fees are collected in a Treasury
-
 
 
 
