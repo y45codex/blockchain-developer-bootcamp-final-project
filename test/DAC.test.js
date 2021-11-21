@@ -198,44 +198,40 @@ contract("DAC - Support Proposals", accounts => {
     });
 
     it("should not be able to support a proposal after polling time is over", async() => {
-        await instance.propose("A Second proposal", {from: member_1, value: proposal_fee});
-
         await new Promise(resolve => setTimeout(resolve, proposal_polling_time * 2000));
 
         await tryCatch(
-            instance.support(1, {from: member_2, value: support_fee}),
+            instance.support(proposal_id, {from: member_2, value: support_fee}),
             "revert Polling time is over"
         );
     });
 
     it("should accept the proposal after support from half of the community", async() => {
-        proposal_id = 1;
-        bill_id     = 0;
-        await instance.propose("This proposal becomes a bill", {from: member_1, value: proposal_fee});
+        const bill_id = 0;
 
         await instance.support(proposal_id, {from: member_2, value: support_fee});
         await instance.support(proposal_id, {from: member_3, value: support_fee});
 
-        proposal = await instance.fetchProposal(1);
-        assert.equal(web3.utils.BN(proposal.status).toString(), "0");
+        proposal = await instance.fetchProposal(proposal_id);
+        assert.equal(proposal.status, 0);
 
         await instance.support(proposal_id, {from: member_4, value: support_fee});
-        proposal = await instance.fetchProposal(1);
+        proposal = await instance.fetchProposal(proposal_id);
 
-        assert.equal(web3.utils.BN(proposal.status).toString(), "2");
+        assert.equal(proposal.status, 2);
 
-        const bill = await instance.fetchBill(0);
+        const bill = await instance.fetchBill(bill_id);
 
-        assert.equal(bill.body, "This proposal becomes a bill", "Failed to convert the proposal to a bill");
-        assert.equal(bill.sponsor, member_1, "Failed to convert the proposal to a bill");
+        assert.equal(bill.body, "A Sample proposal", "Failed to create a bill from the proposal");
+        assert.equal(bill.sponsor, member_1, "Failed to create a bill from the proposal");
     });
 });
 
 contract("DAC - Vote for Bills", accounts => {
     const [member_1, member_2, member_3, member_4, member_5, not_a_member, stranger] = accounts;
     let instance;
-    let bill_id = 0;
-    let proposal_id = 1;
+    const bill_id = 0;
+    const proposal_id = 1;
 
     beforeEach(async () => {
         instance = await DAC.new(
@@ -259,7 +255,7 @@ contract("DAC - Vote for Bills", accounts => {
         await instance.propose("Idea 2", {from: member_1, value: proposal_fee}); // proposal 1
         
 
-        // Support Proposal 1 to be Accepted and become a Bill
+        // Support Proposal 1 to be Accepted and result in a Bill
         await instance.support(proposal_id, {from: member_2, value: support_fee});
         await instance.support(proposal_id, {from: member_3, value: support_fee});
         await instance.support(proposal_id, {from: member_4, value: support_fee});
