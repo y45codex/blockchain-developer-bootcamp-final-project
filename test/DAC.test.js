@@ -49,6 +49,11 @@ contract("DAC", accounts => {
         await catchRevert(instance.register({from: member_1, value: insufficient_stake}));
     });
 
+    it("should fail to register if already a member", async() => {
+        await instance.register({from: member_1, value: membership_stake});
+        await catchRevert(instance.register({from: member_1, value: membership_stake}));
+    });
+
     it("should be able to leave", async() => {
         await instance.register({from: member_1, value: membership_stake});
         assert.isTrue(await instance.isMember(member_1), "registration failed");

@@ -43,7 +43,7 @@ contract DAC {
 
   uint private proposal_count = 0;
 
-  uint private membership_stake = 0;
+  uint public membership_stake = 0;
 
   uint private proposal_fee = 0;
 
@@ -99,6 +99,11 @@ contract DAC {
   }
 
   function register() public payable {
+    require (
+      isMember(msg.sender) == false,
+      "Members can't register twice"
+    );
+
     require (
       membership_stake == msg.value,
       "Wrong stake amount provided" 
