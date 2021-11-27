@@ -39,31 +39,31 @@ contract DAC {
 
   uint public population = 0;
 
-  uint private min_founder_count = 1;
+  uint public min_founder_count = 1;
 
-  uint private proposal_count = 0;
+  uint public proposal_count = 0;
 
   uint public membership_stake = 0;
 
-  uint private proposal_fee = 0;
+  uint public proposal_fee = 0;
 
-  uint private support_fee = 0;
+  uint public support_fee = 0;
 
-  uint private bill_threshold_nominator = 1;
+  uint public bill_threshold_nominator = 1;
 
-  uint private bill_threshold_denominator = 2;
+  uint public bill_threshold_denominator = 2;
 
-  uint private principal_threshold_nominator = 2;
+  uint public principal_threshold_nominator = 2;
 
-  uint private principal_threshold_denominator = 3;
+  uint public principal_threshold_denominator = 3;
 
-  uint private proposal_polling_time = 86400; // 24 hours * 60 minutes * 60 seconds
+  uint public proposal_polling_time = 86400; // 24 hours * 60 minutes * 60 seconds
 
-  uint private bill_polling_time = 86400; // 24 hours * 60 minutes * 60 seconds
+  uint public bill_polling_time = 86400; // 24 hours * 60 minutes * 60 seconds
 
-  uint private bill_count = 0;
+  uint public bill_count = 0;
 
-  uint private principal_count = 0;
+  uint public principal_count = 0;
 
 
   mapping(address => uint) private members;
